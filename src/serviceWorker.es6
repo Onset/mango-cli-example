@@ -7,12 +7,12 @@ const CACHE_BLACKLIST = [
 
 self.addEventListener('install', (e) => {
 	console.log('Installing service worker')
-	event.waitUntil(self.skipWaiting())
+	e.waitUntil(self.skipWaiting())
 })
 
 self.addEventListener('activate', (e) => {
 	console.log('Activated service worker')
-	event.waitUntil(self.clients.claim())
+	e.waitUntil(self.clients.claim())
 })
 
 self.addEventListener('fetch', (e) => {
