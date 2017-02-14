@@ -1,12 +1,9 @@
 module.exports = (components) => {
-	let componentsStartTime, colorLog
+	let componentsStartTime
 
 	if (DEBUG) {
 		componentsStartTime = performance.now()
-		colorLog = (message, color) => {
-			console.log(`%c${message}`, `color: ${color}`)
-		}
-		colorLog('Initializing components...', 'brown')
+		console.groupCollapsed('Initializing components...')
 	}
 
 	//
@@ -31,14 +28,14 @@ module.exports = (components) => {
 
 			if (DEBUG) {
 				const componentEndTime = performance.now()
-				colorLog(`\tcomponent: ${component.name}: ${Math.round(componentEndTime - componentStartTime)}ms`, 'blue')
+				console.log(`component: ${component.name}: ${Math.round(componentEndTime-componentStartTime)} ms`)
 			}
 		} else if (DEBUG) {
-			console.warn(`Component with name ${component.name} was not found!`)
+			console.warn(`component: ${component.name}: not found!`)
 		}
 	}
 	// Instance only required components
-	initComponents.map(init)
+	initComponents.forEach(init)
 
 	// Allow lazy init of components after page load
 	initComponents = {
@@ -47,26 +44,29 @@ module.exports = (components) => {
 
 	if (DEBUG) {
 		const componentsEndTime = performance.now()
-		colorLog(`Components initialization: ${Math.round(componentsEndTime - componentsStartTime)}ms`, 'blue')
-		colorLog('Instances:', 'brown')
-		console.log(instances)
+		console.groupEnd()
+		console.info(`Components initialization: ${Math.round(componentsEndTime-componentsStartTime)} ms`)
+
+		console.groupCollapsed('Instances:')
+		instances.forEach((component) => {
+			console.dir(component)
+		})
+		console.groupEnd()
 	}
 
 	//
 	// Print timing data on page load
 	//
 	if (DEBUG) {
-		const printPerfStats = () => {
+		function printPerfStats() {
 			const timing = window.performance.timing
-			colorLog('Performance:', 'brown')
-			colorLog(
-				`\tdns: \t\t ${timing.domainLookupEnd - timing.domainLookupStart} ms\n` +
-				`\tconnect: \t ${timing.connectEnd - timing.connectStart} ms\n` +
-				`\tttfb: \t\t ${timing.responseStart - timing.connectEnd} ms\n` +
-				`\tbasePage: \t ${timing.responseEnd - timing.responseStart} ms\n` +
-				`\tfrontEnd: \t ${timing.loadEventStart - timing.responseEnd} ms\n`,
-				'blue'
-			)
+			console.groupCollapsed('Performance:')
+			console.log(`dns: \t\t ${timing.domainLookupEnd - timing.domainLookupStart} ms`)
+			console.log(`connect: \t ${timing.connectEnd - timing.connectStart} ms`)
+			console.log(`ttfb: \t\t ${timing.responseStart - timing.connectEnd} ms`)
+			console.log(`basePage: \t ${timing.responseEnd - timing.responseStart} ms`)
+			console.log(`frontEnd: \t ${timing.loadEventStart - timing.responseEnd} ms`)
+			console.groupEnd()
 		}
 
 		window.addEventListener('load', () => setTimeout(printPerfStats, 1000))
