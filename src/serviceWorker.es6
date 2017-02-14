@@ -1,9 +1,10 @@
 const CACHE_NAME = 'v1'
 
 // Url not added to cache
-const CACHE_BLACKLIST = [
-	'^https?:\/\/[^\/.*]+(:\d+)?\/browser-sync\/.*$'
-]
+const CACHE_BLACKLIST = []
+if (DEBUG) {
+	CACHE_BLACKLIST.push('^https?:\/\/[^\/.*]+(:\d+)?\/browser-sync\/.*$')
+}
 
 self.addEventListener('install', (e) => {
 	console.log('Installing service worker')
