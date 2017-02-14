@@ -1,5 +1,7 @@
 const CACHE_NAME = 'v1'
 
+const CACHE_ON_INSTALL = []
+
 // Url not added to cache
 const CACHE_BLACKLIST = []
 if (DEBUG) {
@@ -8,7 +10,12 @@ if (DEBUG) {
 
 self.addEventListener('install', (e) => {
 	console.log('Installing service worker')
-	e.waitUntil(self.skipWaiting())
+	e.waitUntil(
+		caches.open(CACHE_NAME)
+		.then((cache) => {
+			return cache.addAll(CACHE_ON_INSTALL)
+		})
+	)
 })
 
 self.addEventListener('activate', (e) => {
