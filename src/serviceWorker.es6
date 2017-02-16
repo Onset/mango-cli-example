@@ -26,7 +26,7 @@ STATIC_PRECACHE.forEach((url) => {
 	toolbox.router.get(url, toolbox.cacheOnly)
 })
 
-toolbox.router.get('images/*', toolbox.fastest) // @TODO: return larger image if cached
+toolbox.router.get('images/*', toolbox.cacheFirst) // @TODO: return larger image if cached
 
 
 toolbox.router.default = toolbox.networkFirst
