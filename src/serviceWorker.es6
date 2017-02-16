@@ -11,6 +11,13 @@ toolbox.options.debug = DEBUG
 toolbox.options.networkTimeoutSeconds = 5
 toolbox.options.cache.maxEntries = 100
 
+self.addEventListener('install', (e) => {
+	e.waitUntil(self.skipWaiting())
+})
+self.addEventListener('activate', (e) => {
+	e.waitUntil(self.clients.claim())
+})
+
 toolbox.precache([
 	'.', // Index page
 ].concat(STATIC_PRECACHE))
