@@ -5,16 +5,16 @@
   "description": "Sample project structure used at manGoweb",
   "short_name": "Mango",
   "icons": [{
-      "src": "../images/icons/36x36.png",
+      "src": "../images/icons/app-36.png",
       "sizes": "36x36"
     },{
-      "src": "../images/icons/72x72.png",
+      "src": "../images/icons/app-72.png",
       "sizes": "72x72"
     },{
-      "src": "../images/icons/144x144.png",
+      "src": "../images/icons/app-144.png",
       "sizes": "144x144"
     },{
-      "src": "../images/icons/192x192.png",
+      "src": "../images/icons/app-192.png",
       "sizes": "192x192"
   }],
   "start_url": "../",
