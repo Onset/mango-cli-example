@@ -31,10 +31,11 @@ buildstamp:
   - dist/styles/*.css
   - dist/scripts/index.js
 dependencies:
+  - jquery
   - lt-ie-9
   - normalize-scss
   - bourbon
-  - jquery
+  - sw-toolbox
 data:
   manifest: src/data/manifest.json
 hooks:
