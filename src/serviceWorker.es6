@@ -1,4 +1,6 @@
 const toolbox = require('../node_modules/sw-toolbox/sw-toolbox.js') // require('sw-toolbox') has some problems with missing modules
+const imagesHandler = require('./scripts/utils/imagesHandler')
+const idbKeyval = require('idb-keyval')
 
 const STATIC_PRECACHE = [
 	'styles/' + BUILDSTAMP + 'index.css',
@@ -7,12 +9,15 @@ const STATIC_PRECACHE = [
 	'sprites/shapes.svg',
 ]
 
-toolbox.options.debug = DEBUG
+//toolbox.options.debug = DEBUG
 toolbox.options.networkTimeoutSeconds = 5
 toolbox.options.cache.maxEntries = 100
 
 self.addEventListener('install', (e) => {
-	e.waitUntil(self.skipWaiting())
+	e.waitUntil(
+		idbKeyval.clear()
+		.then(self.skipWaiting())
+	)
 })
 self.addEventListener('activate', (e) => {
 	e.waitUntil(self.clients.claim())
@@ -26,7 +31,7 @@ STATIC_PRECACHE.forEach((url) => {
 	toolbox.router.get(url, toolbox.cacheOnly)
 })
 
-toolbox.router.get('images/*', toolbox.cacheFirst) // @TODO: return larger image if cached
+toolbox.router.get('images/*', imagesHandler) // @TODO: return larger image if cached
 
 // @TODO: offline page
 

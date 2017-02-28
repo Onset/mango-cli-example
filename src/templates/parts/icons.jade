@@ -1,6 +1,6 @@
 h2 Application icons
 
 p
-	each image in manifest.icons
+	each image, i in manifest.icons
 		- var size = image.sizes.split('x')[0]
 		img(src=image.src.substr(1), alt=image.sizes, title=image.sizes, width=size, height=size)
