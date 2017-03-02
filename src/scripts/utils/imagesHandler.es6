@@ -13,62 +13,42 @@ module.exports = (request, values, options) => {
 	const generalUrl = leftFragment + rightFragment
 	const requestedSize = parseInt(sizeFragment, 10)
 
-	const imageUrl = (size) => {
-		return `${leftFragment}-${size}${rightFragment}`
-	}
+	const formatImageUrl = (size) => `${leftFragment}-${size}${rightFragment}`
 
-	const serveTheOneFromCache = (storedSize) => {
-		// Get the stored image
-		return toolbox.cacheOnly(new Request(imageUrl(storedSize)), values, options)
-	}
+	const serveTheOneFromCache = (storedSize) =>
+		toolbox.cacheOnly(new Request(formatImageUrl(storedSize)), values, options) // Get the stored image
 
-	const checkResponseOk = (response) => {
-		if (response instanceof Response && response.ok) {
-			return response
-		} else {
-			return Promise.reject(new Error('Bad response'))
-		}
-	}
+	const isResponseOk = (response) =>
+		response instanceof Response && response.ok ? response : Promise.reject(new Error('Bad response'))
 
-	const tryCache = (storedSize) => {
-		// Resolves with adequate image from cache or rejects
-		return new Promise((resolve, reject) => {
+	const tryCache = (storedSize) =>
+		new Promise((resolve, reject) => { // Resolves with adequate image from cache or rejects
 			if (!storedSize || storedSize < requestedSize) {
-				reject(new Error('Adequate image in cache not found'))
+				reject(new Error('Adequate image not found in cache'))
 			} else {
-				toolbox.cacheOnly(new Request(imageUrl(storedSize)), values, options)
-				.then(checkResponseOk)
-				.then(resolve, reject)
+				toolbox.cacheOnly(new Request(formatImageUrl(storedSize)), values, options)
+					.then(isResponseOk)
+					.then(resolve, reject)
 			}
 		})
-	}
 
-	const saveRequestedSize = (response) => {
-		// Saves size of the largest image in cache
-		return idbKeyval.set(generalUrl, requestedSize)
-		.then(() => response) // Pass through response
-	}
+	const saveRequestedSize = (response) =>
+		idbKeyval
+			.set(generalUrl, requestedSize) // Saves size of the largest image in cache
+			.then(() => response) // Pass through response
 
-	const tryNetwork = (storedSize) => {
-		return toolbox.fastest(new Request(imageUrl(requestedSize)), values, options) // "toolbox.fastest" will save to cache (networkOnly won't)
-		.then(checkResponseOk)
-		.then(saveRequestedSize)
-		.catch(() => {
-			return serveTheOneFromCache(storedSize)
-			.then(checkResponseOk)
-		})
-	}
+	const tryNetwork = (storedSize) =>
+		toolbox.fastest(new Request(formatImageUrl(requestedSize)), values, options) // "toolbox.fastest" will save to cache (networkOnly won't)
+			.then(isResponseOk)
+			.then(saveRequestedSize)
+			.catch(() => serveTheOneFromCache(storedSize).then(isResponseOk))
 
 	return new Promise((resolve, reject) => {
 		let storedSize
-		idbKeyval.get(generalUrl)
-		.then((size) => {
-			storedSize = size
-			return tryCache(storedSize)
-		})
-		.catch(() => {
-			return tryNetwork(storedSize)
-		})
-		.then(resolve, reject)
+		idbKeyval
+			.get(generalUrl)
+			.then((size) => tryCache(storedSize = size))
+			.catch(() => tryNetwork(storedSize))
+			.then(resolve, reject)
 	})
 }
