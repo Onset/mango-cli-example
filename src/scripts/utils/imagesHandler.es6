@@ -38,12 +38,7 @@ module.exports = (request, values, options) => {
 			} else {
 				toolbox.cacheOnly(new Request(imageUrl(storedSize)), values, options)
 				.then(checkResponseOk)
-				.then((response) => {
-					resolve(response)
-				})
-				.catch((e) => {
-					reject(e)
-				})
+				.then(resolve, reject)
 			}
 		})
 	}
@@ -51,26 +46,16 @@ module.exports = (request, values, options) => {
 	const saveRequestedSize = (response) => {
 		// Saves size of the largest image in cache
 		return idbKeyval.set(generalUrl, requestedSize)
-		.then(() => {
-			return response // Pass through response
-		})
+		.then(() => response) // Pass through response
 	}
 
 	const tryNetwork = (storedSize) => {
-		return new Promise((resolve, reject) => {
-			toolbox.fastest(new Request(imageUrl(requestedSize)), values, options) // "toolbox.fastest" will save to cache (networkOnly won't)
+		return toolbox.fastest(new Request(imageUrl(requestedSize)), values, options) // "toolbox.fastest" will save to cache (networkOnly won't)
+		.then(checkResponseOk)
+		.then(saveRequestedSize)
+		.catch(() => {
+			return serveTheOneFromCache(storedSize)
 			.then(checkResponseOk)
-			.then(saveRequestedSize)
-			.catch((e) => {
-				return serveTheOneFromCache(storedSize)
-				.then(checkResponseOk)
-			})
-			.then((response) => {
-				resolve(response)
-			})
-			.catch((e) => {
-				reject(e)
-			})
 		})
 	}
 
@@ -81,15 +66,9 @@ module.exports = (request, values, options) => {
 			storedSize = size
 			return tryCache(storedSize)
 		})
-		.catch((e) => {
+		.catch(() => {
 			return tryNetwork(storedSize)
 		})
-		.then((response) => {
-			resolve(response)
-		})
-		.catch((e) => {
-			reject(e)
-		})
-
+		.then(resolve, reject)
 	})
 }
