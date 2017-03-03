@@ -1,4 +1,4 @@
-const Component = require('./component')
+const Component = require('./Component')
 
 /**
  * Example component class
