@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mango-cli example</title>
+    <link rel="manifest" href="data/manifest.json">
+    <meta name="theme-color" content="#FACB01">
+    <meta name="description" content="Sample project structure used at manGoweb">
+    <link rel="icon" type="image/png" href="./images/icons/36x36.png" sizes="36x36">
+    <link rel="stylesheet" href="styles/1498936615-index.css"><!--[if lt IE 9]>
+    <link rel="stylesheet" href="styles/1498936615-oldie.css" media="screen">
+    <script src="node_modules/lt-ie-9/lt-ie-9.min.js"></script><![endif]-->
+    <!-- Queue of JS components to initialize-->
+    <script>
+      initComponents = [
+      	{ name: 'shapes', data: { url: './sprites/shapes.svg' } }
+      ]
+      
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" defer></script>
+    <script src="scripts/1498936615-index.js" defer></script>
+  </head>
+  <body>
+    <main role="main" class="layout">
+      <h1 class="appName">Mango</h1>
+      <p>Sample project structure used at manGoweb</p>
+      <section>
+        <h1>Example component</h1>
+        <div class="example">Tap the button
+          <button class="example-child">
+                  <svg class="shape shape-plus example-shape">
+                    <use xlink:href="#shape-plus"></use>
+                  </svg><span class="example-text">with some action</span>
+          </button>
+        </div>
+        <script>
+          initComponents.push({
+          	name: 'example',
+          	place: '.example',
+          	data: 'Hey there!'
+          })
+        </script>
+      </section>
+      <section>
+        <h1>App icons</h1>
+        <p>The icons are taken from <strong>manifest.json</strong></p>
+        <p><img src="./images/icons/36x36.png" alt="36x36" title="36x36"><img src="./images/icons/72x72.png" alt="72x72" title="72x72"><img src="./images/icons/144x144.png" alt="144x144" title="144x144"><img src="./images/icons/192x192.png" alt="192x192" title="192x192">
+        </p>
+      </section>
+      <section>
+        <h1>Sample content</h1>
+        <p>
+          <img src="https://unsplash.it/800/500/?random" alt="Sample sport picture">
+          <strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+          em Aenean ultricies mi vitae est.
+          Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+          code commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href='../'>Donec non enim</a> in turpis pulvinar facilisis. Ut felis.
+          
+        </p>
+        <h2>Header Level 2</h2>
+        <ol>
+          <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+          <li>Aliquam tincidunt mauris eu risus.</li>
+        </ol>
+        <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</blockquote>
+        <h3>Header Level 3</h3>
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+          <li>Aliquam tincidunt mauris eu risus.</li>
+        </ul>
+        <h4>Heading 4</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, officia, provident exercitationem repellat in voluptatum dolorem perferendis natus dolores maxime aliquid nihil odio obcaecati recusandae numquam atque eaque! Nihil, amet!</p>
+        <h5>Heading 5</h5>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, officia, provident exercitationem repellat in voluptatum dolorem perferendis natus dolores maxime aliquid nihil odio obcaecati recusandae numquam atque eaque! Nihil, amet!</p>
+        <h6>Heading 6</h6>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, officia, provident exercitationem repellat in voluptatum dolorem perferendis natus dolores maxime aliquid nihil odio obcaecati recusandae numquam atque eaque! Nihil, amet!</p>
+        <dl>
+          <dt>Definition List Title</dt>
+          <dd>This is a definition list division.</dd>
+          <dt>Lorem ipsum Veniam</dt>
+          <dd>Lorem ipsum Quis ex fugiat elit in incididunt velit aliqua voluptate veniam dolore amet magna.</dd>
+        </dl>
+        <table>
+          <tbody>
+            <tr>
+              <th>Table Header 1</th>
+              <th>Table Header 2</th>
+              <th>Table Header 3</th>
+            </tr>
+            <tr>
+              <td>Division 1</td>
+              <td>Division 2</td>
+              <td>Division 3</td>
+            </tr>
+            <tr class="even">
+              <td>Division 1</td>
+              <td>Division 2</td>
+              <td>Division 3</td>
+            </tr>
+            <tr>
+              <td>Division 1</td>
+              <td>Division 2</td>
+              <td>Division 3</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>
